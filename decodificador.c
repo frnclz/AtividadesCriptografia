@@ -1,47 +1,34 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
-/* run this program using the console pauser or add your own getch, system("pause") or input loop */
+void decodificar(char mensagem[], int deslocamento){
+    for(int i = 0; mensagem[i] != '\0'; i++){
+        if(isupper(mensagem[i])){
+            mensagem[i] = 'A' + (mensagem[i] - 'A' - deslocamento + 26) % 26;
+        } else if(islower(mensagem[i])){
+            mensagem[i] = 'a' + (mensagem[i] - 'a' - deslocamento + 26) % 26;
+        }
+    }
+}
 
-int main(int argc, char *argv[]) {
-	char letras[26] = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
-	char word[128];
-	int nword[128];
-	int len;
-	int i;
-	int w;
-	int z;
-	char tempword[128];
-	
-	scanf("%[^\n]s", word);
-	len = strlen(word);	
-	
-	for(i = 0; i < len; i++){
-		w = 0;
-		while(word[i] != letras[w]){
-			w++;
-			
-		}
-		nword[i] = w;
-		
-	}
-	
-	for(i = 0; i < len; i++){
-		printf("%d", nword[i]);
-	}
-	printf("\n");
-	for(i = 1; i <= 26; i++){
-		for(z = 0; z < len; z++){
-			w = nword[z] + i;
-			if(w >= 26){
-				w -= 26;
-			}
-			printf("%c", letras[w]);
-		}
-		printf("\n");	
-	}
-	
-	
-	return 0;
+int main() {
+    char mensagem[100];
+    int deslocamento;
+    
+    printf("Digite a mensagem codificada: \n");
+    gets(mensagem); 
+    
+    printf("Tentando todos os deslocamentos possiveis:\n");
+    for (deslocamento = 1; deslocamento < 26; deslocamento++) {
+        char mensagem_decodificada[100];
+        strcpy(mensagem_decodificada, mensagem); 
+        
+        decodificar(mensagem_decodificada, deslocamento);
+        
+        printf("Deslocamento %d: %s\n", deslocamento, mensagem_decodificada);
+    }
+    
+    return 0;
 }
